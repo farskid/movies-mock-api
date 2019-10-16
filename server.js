@@ -1,14 +1,15 @@
 const { endpointLog, log } = require("./log");
 const express = require("express");
 const server = express();
+const PORT = process.env.PORT || 3000;
 
 const PER_PAGE = 10;
 
 const db = require("./db.json");
 const { populars, movies } = db;
 
-server.listen(3000, () => {
-  console.log("JSON Server is running on 3000");
+server.listen(PORT, () => {
+  console.log(`JSON Server is running on ${PORT}`);
 });
 
 /**
