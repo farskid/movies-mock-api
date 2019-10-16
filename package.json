@@ -1,0 +1,20 @@
+{
+  "name": "movies-mock-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js",
+    "docs:generate": "apidoc -f ./server.js -o docs",
+    "docs:serve": "serve docs"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "json-server": "^0.15.1",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "apidoc": "^0.17.7",
+    "serve": "^11.2.0"
+  }
+}
