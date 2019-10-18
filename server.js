@@ -1,5 +1,6 @@
 const { endpointLog, log } = require("./log");
 const express = require("express");
+const cors = require("cors");
 const server = express();
 const PORT = process.env.PORT || 3000;
 
@@ -7,6 +8,8 @@ const PER_PAGE = 10;
 
 const db = require("./db.json");
 const { populars, movies } = db;
+
+server.use(cors());
 
 server.listen(PORT, () => {
   console.log(`JSON Server is running on ${PORT}`);
