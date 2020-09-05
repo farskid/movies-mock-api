@@ -1,5 +1,6 @@
 const express = require("express");
 const serverlessHTTP = require("serverless-http");
+const cors = require("cors");
 const { endpointLog, log } = require("../log");
 const db = require("../db.json");
 
@@ -107,6 +108,7 @@ apiRouter.get("/populars", (_, res) => {
   return res.json(populars);
 });
 
+server.use(cors());
 server.use("/.netlify/functions/api", apiRouter);
 
 module.exports.handler = serverlessHTTP(server);
