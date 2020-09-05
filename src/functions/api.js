@@ -37,7 +37,7 @@ apiRouter.get("/movies", (req, res) => {
     page = pageCount;
   }
 
-  return res.json({
+  return responseDecorator(res).json({
     page,
     total: movies.length,
     movies: movies.slice(page * perPage - perPage, page * perPage).map((m) => {
@@ -57,13 +57,13 @@ apiRouter.get("/movies/:id", (req, res) => {
 
   //   Not found movie
   if (!movie) {
-    return res.status(404).send();
+    return responseDecorator(res).status(404).send();
   }
 
   //   Strip out reviews from the movie
   const { reviews, ...restMovie } = movie;
 
-  return res.json(restMovie);
+  return responseDecorator(res).json(restMovie);
 });
 
 apiRouter.get("/movies/:id/reviews", (req, res) => {
@@ -83,7 +83,7 @@ apiRouter.get("/movies/:id/reviews", (req, res) => {
 
   //   Not found movie
   if (!movie) {
-    return res.status(404).send();
+    return responseDecorator(res).status(404).send();
   }
 
   const { reviews } = movie;
@@ -96,7 +96,7 @@ apiRouter.get("/movies/:id/reviews", (req, res) => {
     page = pageCount;
   }
 
-  return res.json({
+  return responseDecorator(res).json({
     page,
     total: reviews.length,
     reviews: reviews.slice(page * perPage - perPage, page * perPage),
@@ -105,15 +105,20 @@ apiRouter.get("/movies/:id/reviews", (req, res) => {
 
 apiRouter.get("/populars", (_, res) => {
   endpointLog("GET", "/populars");
-  return res.json(populars);
+  return responseDecorator(res).json(populars);
 });
 
 server.use(cors());
 server.use("/.netlify/functions/api", apiRouter);
-server.use(function lastModifiedHandler(req, res, next) {
+server.set("etag", false);
+
+// No idea why a middleware didn't work!
+function responseDecorator(res) {
   // new Date().toISOString()
-  res.setHeader("Last-Modified", "2020-09-05T16:33:03.653Z");
-  next();
-});
+  res.setHeader("x-last-modified", "Sat, 5 Sep 2020 19:40:00 GMT");
+  // Disable caching
+  res.set("Cache-Control", "no-store");
+  return res;
+}
 
 module.exports.handler = serverlessHTTP(server);
