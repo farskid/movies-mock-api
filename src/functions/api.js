@@ -110,5 +110,10 @@ apiRouter.get("/populars", (_, res) => {
 
 server.use(cors());
 server.use("/.netlify/functions/api", apiRouter);
+server.use(function lastModifiedHandler(req, res, next) {
+  // new Date().toISOString()
+  res.setHeader("Last-Modified", "2020-09-05T16:33:03.653Z");
+  next();
+});
 
 module.exports.handler = serverlessHTTP(server);
